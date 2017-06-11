@@ -1,0 +1,49 @@
+﻿@model PizzaMan.Models.Pizza
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Pizza</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ingredients)
+        </dt>
+
+        <dd>
+            @foreach (var i in Model.Ingredients)
+            {
+                @Html.DisplayFor(model => i.Name)
+                if (i != Model.Ingredients.Last())
+                {
+                    @Html.Raw(",&nbsp")
+                }
+            }
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PizzaId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

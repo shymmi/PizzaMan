@@ -1,0 +1,92 @@
+﻿@model IEnumerable<PizzaMan.Models.PizzaListViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script>
+    function CallChangefunc(size) // wolałbym to zrobić w kontrolerze, ale nie za bardzo wiem jak
+    {
+        var defPrice = size.parentNode.parentNode.childNodes[1].value;
+        size.parentNode.parentNode.childNodes.forEach(function (entry) {
+            if (entry.className == "price") {
+                if (size.value == "Medium") {
+                    entry.innerHTML = defPrice * 1.5;
+                }
+                else if (size.value == "Large") {
+                    entry.innerHTML = defPrice * 2.0;
+                }
+                else {
+                    entry.innerHTML = defPrice;
+                }
+            }
+        });
+    }
+</script>
+
+<h2>Pizzas:</h2>
+@using (Html.BeginForm("Index", "Pizzas", FormMethod.Post))
+{
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<p style="float:right">
+    Find pizzas by name: @Html.TextBox("name")
+    <input type="submit" value="Search" />
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ingredients)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Size)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dough)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        @Html.Hidden("main-price", item.Price)
+        <td>
+            @Html.DisplayFor(x => item.Name)
+        </td>
+        <td>
+            @foreach (var i in item.Ingredients)
+            {
+                @Html.DisplayFor(x => i.Name)
+                if (i != item.Ingredients.Last())
+                {
+                    @Html.Raw(",&nbsp")
+                }
+            }
+        </td>
+        <td>
+            @Html.DropDownList("Sizes", item.Size, new { @onchange = "CallChangefunc(this)" })
+        </td>
+        <td>
+            @Html.DropDownList("Doughs", item.Dough)
+        </td>
+        <td class="price">
+            @Html.DisplayFor(model => item.CurrentPrice)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.PizzaId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.PizzaId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.PizzaId })
+        </td>
+    </tr>
+}
+
+</table>
+}

@@ -1,0 +1,8 @@
+﻿@model IngredientSelectViewModel
+@using PizzaMan.Models
+
+<fieldset>
+    @Html.HiddenFor(model => model.IngredientId)
+    @Html.CheckBoxFor(model => model.IsSelected)
+    @Html.DisplayFor(model => model.Name)
+</fieldset>
